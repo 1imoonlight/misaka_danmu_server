@@ -8,7 +8,7 @@ name: Publish to Docker Hub
 on:
   push:
     branches:
-      - "marster"
+      - "master"
     tags:
       - "v*.*.*"
 
