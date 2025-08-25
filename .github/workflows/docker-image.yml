@@ -7,8 +7,6 @@ name: Publish to Docker Hub
 # 3. 当创建 'v*.*.*' 格式的标签时
 on:
   push:
-    branches:
-      - "main"
     tags:
       - "v*.*.*"
 
