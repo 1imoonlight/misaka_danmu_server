@@ -31,27 +31,28 @@ class RateLimiter:
         """
         获取提供商的特定配额。
         """
-        # try:
-        #     scraper = self._scraper_manager.get_scraper(provider_name)
-        #     # 配额在 scraper 类中作为类属性定义
-        #     quota = getattr(scraper, 'rate_limit_quota', None)
-        #     if quota is not None and quota > 0:
-        #         return quota
-        # except (ValueError, AttributeError):
-        #     # 找不到搜索源或属性，则没有特定配额
-        #     pass
+        try:
+            scraper = self._scraper_manager.get_scraper(provider_name)
+            # 配额在 scraper 类中作为类属性定义
+            quota = getattr(scraper, 'rate_limit_quota', None)
+            if quota is not None and quota > 0:
+                return quota
+        except (ValueError, AttributeError):
+            # 找不到搜索源或属性，则没有特定配额
+            pass
         return None
 
     async def _get_global_limit(self) -> tuple[int, str]:
         """获取全局限制设置。"""
-        global_enabled_str = await self._config_manager.get("globalRateLimitEnabled", "true")
-        if global_enabled_str.lower() != 'true':
-            return 0, "hour"  # 0 表示无限制
+        return 0, "hour"
+        # global_enabled_str = await self._config_manager.get("globalRateLimitEnabled", "true")
+        # if global_enabled_str.lower() != 'true':
+        #     return 0, "hour"  # 0 表示无限制
 
-        global_limit_str = await self._config_manager.get("globalRateLimitCount", "50")
-        global_limit = int(global_limit_str) if global_limit_str.isdigit() else 50
-        global_period = await self._config_manager.get("globalRateLimitPeriod", "hour")
-        return global_limit, global_period
+        # global_limit_str = await self._config_manager.get("globalRateLimitCount", "50")
+        # global_limit = int(global_limit_str) if global_limit_str.isdigit() else 50
+        # global_period = await self._config_manager.get("globalRateLimitPeriod", "hour")
+        # return global_limit, global_period
 
     async def check(self, provider_name: str):
         """
