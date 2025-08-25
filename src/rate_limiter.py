@@ -31,15 +31,15 @@ class RateLimiter:
         """
         获取提供商的特定配额。
         """
-        try:
-            scraper = self._scraper_manager.get_scraper(provider_name)
-            # 配额在 scraper 类中作为类属性定义
-            quota = getattr(scraper, 'rate_limit_quota', None)
-            if quota is not None and quota > 0:
-                return quota
-        except (ValueError, AttributeError):
-            # 找不到搜索源或属性，则没有特定配额
-            pass
+        # try:
+        #     scraper = self._scraper_manager.get_scraper(provider_name)
+        #     # 配额在 scraper 类中作为类属性定义
+        #     quota = getattr(scraper, 'rate_limit_quota', None)
+        #     if quota is not None and quota > 0:
+        #         return quota
+        # except (ValueError, AttributeError):
+        #     # 找不到搜索源或属性，则没有特定配额
+        #     pass
         return None
 
     async def _get_global_limit(self) -> tuple[int, str]:
